@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MunicipalServicesApp.Data;
 using MunicipalServicesApp.Models;
-using MunicipalServicesApp.Models.ViewModels;
 using MunicipalServicesApp.DataStructures;
 
 namespace MunicipalServicesApp.Services
