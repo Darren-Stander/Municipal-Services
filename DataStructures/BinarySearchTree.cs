@@ -5,16 +5,16 @@ namespace MunicipalServicesApp.DataStructures
     /// <summary>
     /// Binary Search Tree node for storing service requests
     /// </summary>
-    public class BSTNode
+  public class BSTNode
     {
         public ServiceRequest Data { get; set; }
-        public BSTNode? Left { get; set; }
+  public BSTNode? Left { get; set; }
         public BSTNode? Right { get; set; }
 
      public BSTNode(ServiceRequest data)
-        {
-            Data = data;
-            Left = null;
+   {
+         Data = data;
+     Left = null;
   Right = null;
         }
     }
