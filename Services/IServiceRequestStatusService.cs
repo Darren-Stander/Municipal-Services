@@ -29,8 +29,8 @@ namespace MunicipalServicesApp.Services
 
         // Graph operations
         List<ServiceRequest> GetRelatedRequests(int requestId);
- List<ServiceRequest> FindRequestsByLocation(string location);
-      Dictionary<string, int> GetLocationClusters();
+        List<ServiceRequest> FindRequestsByLocation(string location);
+        Dictionary<string, int> GetLocationClusters();
         Dictionary<string, int> GetCategoryDistribution();
 
         // Statistics and analytics
@@ -38,12 +38,12 @@ namespace MunicipalServicesApp.Services
         Task<Dictionary<string, int>> GetPriorityDistributionAsync();
         Task<double> GetAverageResolutionTimeAsync();
 
-     // Helper methods
-      Task<List<string>> GetCategoriesAsync();
+        // Helper methods
+        Task<List<string>> GetCategoriesAsync();
         Task<List<string>> GetDepartmentsAsync();
         string GenerateRequestNumber();
 
-  // Rebuild data structures (called when data changes)
+        // Rebuild data structures (called when data changes)
         Task RebuildDataStructuresAsync();
     }
 }
