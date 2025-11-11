@@ -1,0 +1,330 @@
+@model MunicipalServicesApp.Models.ViewModels.RequestStatusViewModel
+@{
+    ViewData["Title"] = "Service Request Status";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+ <div class="col-12">
+            <h1 class="display-5 mb-4">
+       <i class="bi bi-list-check text-primary"></i> Service Request Status Tracker
+ </h1>
+            <p class="lead text-muted">Track and manage municipal service requests using advanced data structures</p>
+        </div>
+    </div>
+
+    <!-- Statistics Dashboard -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+         <div class="card border-primary shadow-sm">
+              <div class="card-body text-center">
+ <i class="bi bi-inboxes-fill text-primary" style="font-size: 2.5rem;"></i>
+         <h3 class="mt-2 mb-0">@Model.TotalRequests</h3>
+          <p class="text-muted mb-0">Total Requests</p>
+       </div>
+         </div>
+     </div>
+        <div class="col-md-3">
+        <div class="card border-info shadow-sm">
+          <div class="card-body text-center">
+           <i class="bi bi-folder-check text-info" style="font-size: 2.5rem;"></i>
+             <h3 class="mt-2 mb-0">@Model.OpenRequests</h3>
+      <p class="text-muted mb-0">Open Requests</p>
+       </div>
+ </div>
+        </div>
+    <div class="col-md-3">
+            <div class="card border-warning shadow-sm">
+    <div class="card-body text-center">
+         <i class="bi bi-gear-fill text-warning" style="font-size: 2.5rem;"></i>
+     <h3 class="mt-2 mb-0">@Model.InProgressRequests</h3>
+         <p class="text-muted mb-0">In Progress</p>
+        </div>
+            </div>
+        </div>
+   <div class="col-md-3">
+            <div class="card border-success shadow-sm">
+       <div class="card-body text-center">
+        <i class="bi bi-check-circle-fill text-success" style="font-size: 2.5rem;"></i>
+<h3 class="mt-2 mb-0">@Model.ResolvedRequests</h3>
+         <p class="text-muted mb-0">Resolved</p>
+</div>
+            </div>
+    </div>
+    </div>
+
+    <!-- Average Resolution Time -->
+    <div class="row mb-4">
+   <div class="col-12">
+  <div class="alert alert-info">
+    <i class="bi bi-clock-history"></i>
+   <strong>Average Resolution Time:</strong> @Model.AverageResolutionDays.ToString("F1") days
+     </div>
+        </div>
+    </div>
+
+    <!-- Quick Search -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+   <div class="card shadow-sm">
+  <div class="card-body">
+    <h5 class="card-title"><i class="bi bi-search"></i> Track Your Request</h5>
+         <form asp-action="QuickSearch" method="post" class="row g-3">
+  <div class="col-md-9">
+         <input type="text" class="form-control" name="requestNumber" placeholder="Enter Request Number (e.g., REQ-2024-00001)" required>
+    </div>
+          <div class="col-md-3">
+     <button type="submit" class="btn btn-primary w-100">
+           <i class="bi bi-search"></i> Track
+      </button>
+   </div>
+    </form>
+             </div>
+            </div>
+      </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm bg-light">
+                <div class="card-body">
+     <h6 class="card-title">Quick Actions</h6>
+       <a asp-action="Analytics" class="btn btn-outline-primary btn-sm w-100 mb-2">
+    <i class="bi bi-graph-up"></i> View Analytics
+         </a>
+   </div>
+ </div>
+        </div>
+    </div>
+
+    <!-- Advanced Search and Filter -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="bi bi-funnel"></i> Search & Filter Requests</h5>
+</div>
+        <div class="card-body">
+      <form asp-action="Index" method="get">
+            <div class="row g-3">
+    <div class="col-md-3">
+        <label class="form-label">Search Query</label>
+   <input type="text" class="form-control" name="searchQuery" value="@Model.SearchQuery" placeholder="Keywords...">
+         </div>
+             <div class="col-md-2">
+        <label class="form-label">Category</label>
+ <select class="form-select" name="category">
+                 <option value="">All Categories</option>
+  @foreach (var cat in Model.Categories)
+         {
+          <option value="@cat" selected="@(Model.SelectedCategory == cat)">@cat</option>
+    }
+       </select>
+         </div>
+      <div class="col-md-2">
+             <label class="form-label">Status</label>
+         <select class="form-select" name="status">
+        <option value="">All Statuses</option>
+           <option value="Submitted" selected="@(Model.SelectedStatus == "Submitted")">Submitted</option>
+      <option value="UnderReview" selected="@(Model.SelectedStatus == "UnderReview")">Under Review</option>
+    <option value="Assigned" selected="@(Model.SelectedStatus == "Assigned")">Assigned</option>
+   <option value="InProgress" selected="@(Model.SelectedStatus == "InProgress")">In Progress</option>
+ <option value="Resolved" selected="@(Model.SelectedStatus == "Resolved")">Resolved</option>
+    <option value="Closed" selected="@(Model.SelectedStatus == "Closed")">Closed</option>
+   </select>
+     </div>
+        <div class="col-md-2">
+   <label class="form-label">Priority</label>
+       <select class="form-select" name="priority">
+             <option value="">All Priorities</option>
+ <option value="Critical" selected="@(Model.SelectedPriority == "Critical")">Critical</option>
+ <option value="High" selected="@(Model.SelectedPriority == "High")">High</option>
+             <option value="Medium" selected="@(Model.SelectedPriority == "Medium")">Medium</option>
+           <option value="Low" selected="@(Model.SelectedPriority == "Low")">Low</option>
+              </select>
+         </div>
+      <div class="col-md-2">
+    <label class="form-label">Sort By</label>
+         <select class="form-select" name="sortBy">
+   <option value="Date" selected="@(Model.SortBy == "Date")">Date (BST)</option>
+ <option value="Priority" selected="@(Model.SortBy == "Priority")">Priority (AVL)</option>
+            <option value="Id" selected="@(Model.SortBy == "Id")">ID (BST)</option>
+  </select>
+              </div>
+          <div class="col-md-1">
+            <label class="form-label">&nbsp;</label>
+             <button type="submit" class="btn btn-primary w-100">
+    <i class="bi bi-search"></i>
+       </button>
+       </div>
+      </div>
+   </form>
+   </div>
+    </div>
+
+    <!-- Two Column Layout -->
+    <div class="row">
+      <!-- Main Content - All Requests -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm mb-4">
+     <div class="card-header bg-light">
+        <h5 class="mb-0">
+   <i class="bi bi-list-ul"></i> All Service Requests
+         <span class="badge bg-primary">@Model.FilteredRequests.Count</span>
+   </h5>
+  </div>
+      <div class="card-body p-0">
+  @if (Model.FilteredRequests.Any())
+    {
+       <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead class="table-light">
+    <tr>
+  <th>Request #</th>
+           <th>Title</th>
+           <th>Category</th>
+              <th>Location</th>
+       <th>Status</th>
+     <th>Priority</th>
+   <th>Date</th>
+          <th>Actions</th>
+           </tr>
+        </thead>
+            <tbody>
+        @foreach (var request in Model.FilteredRequests)
+       {
+   <tr>
+           <td><code>@request.RequestNumber</code></td>
+      <td>
+   <strong>@request.Title</strong>
+ @if (request.DaysOpen > 7 && request.Status != MunicipalServicesApp.Models.RequestStatus.Resolved)
+          {
+           <span class="badge bg-warning text-dark ms-1">@request.DaysOpen days</span>
+          }
+   </td>
+       <td><small>@request.Category</small></td>
+       <td><small><i class="bi bi-geo-alt"></i> @request.Location</small></td>
+              <td><span class="badge bg-@request.StatusColor">@request.Status</span></td>
+   <td><span class="badge bg-@request.PriorityColor">@request.Priority</span></td>
+   <td><small>@request.SubmittedDate.ToString("MM/dd/yyyy")</small></td>
+                <td>
+          <a asp-action="Track" asp-route-id="@request.Id" class="btn btn-sm btn-outline-primary">
+     <i class="bi bi-eye"></i> Track
+  </a>
+  </td>
+    </tr>
+    }
+         </tbody>
+    </table>
+      </div>
+   }
+      else
+ {
+              <div class="p-4 text-center text-muted">
+<i class="bi bi-inbox" style="font-size: 3rem;"></i>
+        <p class="mt-2">No requests found matching your criteria.</p>
+         </div>
+   }
+                </div>
+          </div>
+   </div>
+
+   <!-- Sidebar - Priority Requests -->
+        <div class="col-lg-4">
+            <!-- Top Priority Requests (Max Heap) -->
+      <div class="card shadow-sm mb-4">
+          <div class="card-header bg-danger text-white">
+     <h6 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Top Priority (Max Heap)</h6>
+          </div>
+    <div class="card-body p-0">
+       <div class="list-group list-group-flush">
+           @foreach (var request in Model.TopPriorityRequests)
+    {
+        <a asp-action="Track" asp-route-id="@request.Id" class="list-group-item list-group-item-action">
+          <div class="d-flex justify-content-between align-items-center">
+      <div class="flex-grow-1">
+   <small class="text-muted d-block">@request.RequestNumber</small>
+   <strong>@request.Title</strong>
+    <div class="mt-1">
+           <span class="badge bg-@request.PriorityColor">@request.Priority</span>
+<span class="badge bg-@request.StatusColor">@request.Status</span>
+         </div>
+           </div>
+        <i class="bi bi-chevron-right"></i>
+   </div>
+          </a>
+ }
+          </div>
+       </div>
+            </div>
+
+            <!-- Oldest Requests (Min Heap) -->
+      <div class="card shadow-sm mb-4">
+ <div class="card-header bg-warning text-dark">
+      <h6 class="mb-0"><i class="bi bi-clock-history"></i> Oldest Unresolved (Min Heap)</h6>
+      </div>
+  <div class="card-body p-0">
+        <div class="list-group list-group-flush">
+     @foreach (var request in Model.OldestRequests)
+            {
+         <a asp-action="Track" asp-route-id="@request.Id" class="list-group-item list-group-item-action">
+   <div class="d-flex justify-content-between align-items-center">
+       <div class="flex-grow-1">
+       <small class="text-muted d-block">@request.RequestNumber</small>
+        <strong>@request.Title</strong>
+      <div class="mt-1">
+       <span class="badge bg-secondary">@request.DaysOpen days open</span>
+   <span class="badge bg-@request.StatusColor">@request.Status</span>
+      </div>
+ </div>
+  <i class="bi bi-chevron-right"></i>
+         </div>
+           </a>
+        }
+            </div>
+              </div>
+        </div>
+
+            <!-- Location Clusters (Graph Analysis) -->
+            <div class="card shadow-sm">
+      <div class="card-header bg-info text-white">
+         <h6 class="mb-0"><i class="bi bi-geo-alt"></i> Location Clusters (Graph)</h6>
+     </div>
+             <div class="card-body">
+      @foreach (var cluster in Model.LocationClusters.Take(5))
+ {
+  <div class="mb-2">
+        <div class="d-flex justify-content-between align-items-center mb-1">
+         <small class="text-truncate" style="max-width: 200px;">@cluster.Key</small>
+ <span class="badge bg-info">@cluster.Value</span>
+        </div>
+                 <div class="progress" style="height: 5px;">
+            <div class="progress-bar bg-info" style="width: @((cluster.Value * 100.0 / Model.TotalRequests))%"></div>
+         </div>
+    </div>
+    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Structures Info -->
+    <div class="row mt-4">
+        <div class="col-12">
+    <div class="alert alert-light border">
+        <h6><i class="bi bi-info-circle"></i> Data Structures in Use:</h6>
+    <ul class="mb-0">
+        <li><strong>Binary Search Tree (BST):</strong> Fast searching and sorting by ID and request number</li>
+     <li><strong>AVL Tree:</strong> Balanced tree for priority-based ordering and retrieval</li>
+    <li><strong>Max Heap:</strong> Quick access to highest priority requests</li>
+        <li><strong>Min Heap:</strong> Efficient tracking of oldest unresolved requests</li>
+     <li><strong>Graph:</strong> Relationship mapping for related requests, location clusters, and pattern analysis</li>
+         </ul>
+       </div>
+        </div>
+</div>
+</div>
+
+@section Scripts {
+    <script>
+        // Auto-refresh statistics every 30 seconds
+     setTimeout(function() {
+   location.reload();
+        }, 30000);
+    </script>
+}

@@ -69,20 +69,21 @@
         <div class="col-md-4 mb-3">
             <div class="card h-100">
                 <div class="card-header bg-info">
-                    <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Track Status</h5>
+                    <h5 class="mb-0"><i class="bi bi-list-check me-2"></i>Request Status</h5>
                 </div>
                 <div class="card-body">
-                    <p>Check the status of your service requests and view progress updates.</p>
+                    <p>Track municipal service requests with advanced search and filtering capabilities.</p>
                     <ul class="small">
                         <li>Real-time tracking</li>
                         <li>Status updates</li>
                         <li>Resolution timeline</li>
+                        <li>Advanced analytics</li>
                     </ul>
                 </div>
                 <div class="card-footer bg-transparent">
-                    <button class="btn btn-secondary w-100" disabled>
-                        <i class="bi bi-hourglass-split"></i> Coming Soon
-                    </button>
+                    <a asp-controller="RequestStatus" asp-action="Index" class="btn btn-info w-100">
+                        <i class="bi bi-search"></i> Track Requests
+                    </a>
                 </div>
             </div>
         </div>

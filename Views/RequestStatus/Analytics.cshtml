@@ -1,0 +1,352 @@
+@model MunicipalServicesApp.Models.ViewModels.RequestStatusViewModel
+@{
+    ViewData["Title"] = "Service Request Analytics";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+ <div class="col-12">
+ <h1 class="display-5">
+   <i class="bi bi-graph-up text-primary"></i> Service Request Analytics
+            </h1>
+    <p class="lead text-muted">Advanced analytics using Graph and Tree data structures</p>
+   </div>
+    </div>
+
+    <!-- Summary Statistics -->
+    <div class="row mb-4">
+  <div class="col-md-3">
+   <div class="card border-primary shadow">
+    <div class="card-body text-center">
+  <h2 class="display-4 text-primary mb-0">@Model.TotalRequests</h2>
+       <p class="text-muted">Total Requests</p>
+       </div>
+   </div>
+   </div>
+        <div class="col-md-3">
+        <div class="card border-info shadow">
+      <div class="card-body text-center">
+       <h2 class="display-4 text-info mb-0">@Model.OpenRequests</h2>
+    <p class="text-muted">Open Requests</p>
+       </div>
+   </div>
+  </div>
+        <div class="col-md-3">
+       <div class="card border-warning shadow">
+ <div class="card-body text-center">
+      <h2 class="display-4 text-warning mb-0">@Model.InProgressRequests</h2>
+     <p class="text-muted">In Progress</p>
+   </div>
+ </div>
+   </div>
+  <div class="col-md-3">
+   <div class="card border-success shadow">
+    <div class="card-body text-center">
+   <h2 class="display-4 text-success mb-0">@Model.ResolvedRequests</h2>
+     <p class="text-muted">Resolved</p>
+      </div>
+       </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row mb-4">
+        <!-- Status Distribution -->
+   <div class="col-lg-6">
+      <div class="card shadow-sm h-100">
+  <div class="card-header bg-primary text-white">
+         <h5 class="mb-0"><i class="bi bi-pie-chart"></i> Status Distribution</h5>
+        </div>
+     <div class="card-body">
+   <canvas id="statusChart" height="250"></canvas>
+      </div>
+     </div>
+   </div>
+
+   <!-- Priority Distribution -->
+     <div class="col-lg-6">
+        <div class="card shadow-sm h-100">
+        <div class="card-header bg-danger text-white">
+       <h5 class="mb-0"><i class="bi bi-bar-chart"></i> Priority Distribution</h5>
+      </div>
+  <div class="card-body">
+      <canvas id="priorityChart" height="250"></canvas>
+   </div>
+      </div>
+   </div>
+    </div>
+
+    <!-- Location Clusters and Category Distribution -->
+    <div class="row mb-4">
+        <!-- Location Clusters (Graph Analysis) -->
+        <div class="col-lg-6">
+   <div class="card shadow-sm h-100">
+     <div class="card-header bg-info text-white">
+    <h5 class="mb-0"><i class="bi bi-geo-alt"></i> Location Clusters (Graph Algorithm)</h5>
+    </div>
+      <div class="card-body">
+       @if (Model.LocationClusters.Any())
+ {
+    <div class="mb-3">
+    <p class="text-muted">Requests grouped by location using graph clustering:</p>
+  </div>
+     foreach (var cluster in Model.LocationClusters.Take(10))
+   {
+      var percentage = (cluster.Value * 100.0 / Model.TotalRequests);
+         <div class="mb-3">
+     <div class="d-flex justify-content-between mb-1">
+     <span class="text-truncate" style="max-width: 70%;" title="@cluster.Key">
+ <i class="bi bi-geo-alt-fill text-info"></i> @cluster.Key
+           </span>
+  <span class="fw-bold">@cluster.Value requests</span>
+       </div>
+     <div class="progress" style="height: 25px;">
+          <div class="progress-bar bg-info" 
+      role="progressbar" 
+   style="width: @percentage%" 
+  aria-valuenow="@cluster.Value" 
+         aria-valuemin="0" 
+   aria-valuemax="@Model.TotalRequests">
+   @percentage.ToString("F1")%
+    </div>
+     </div>
+      </div>
+   }
+    }
+      else
+   {
+  <p class="text-muted">No location data available.</p>
+       }
+       </div>
+   </div>
+        </div>
+
+   <!-- Category Distribution -->
+   <div class="col-lg-6">
+  <div class="card shadow-sm h-100">
+     <div class="card-header bg-success text-white">
+  <h5 class="mb-0"><i class="bi bi-tags"></i> Category Distribution (Graph Analysis)</h5>
+       </div>
+     <div class="card-body">
+     @if (Model.CategoryDistribution.Any())
+  {
+       <div class="mb-3">
+   <p class="text-muted">Requests grouped by category using graph traversal:</p>
+   </div>
+   foreach (var category in Model.CategoryDistribution.Take(10))
+   {
+     var percentage = (category.Value * 100.0 / Model.TotalRequests);
+    <div class="mb-3">
+     <div class="d-flex justify-content-between mb-1">
+<span class="fw-semibold">
+<i class="bi bi-tag-fill text-success"></i> @category.Key
+   </span>
+ <span class="fw-bold">@category.Value requests</span>
+  </div>
+  <div class="progress" style="height: 25px;">
+         <div class="progress-bar bg-success" 
+  role="progressbar" 
+    style="width: @percentage%" 
+      aria-valuenow="@category.Value" 
+   aria-valuemin="0" 
+aria-valuemax="@Model.TotalRequests">
+       @percentage.ToString("F1")%
+ </div>
+   </div>
+       </div>
+        }
+      }
+      else
+    {
+       <p class="text-muted">No category data available.</p>
+ }
+  </div>
+    </div>
+</div>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="row mb-4">
+   <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-header bg-warning text-dark">
+    <h5 class="mb-0"><i class="bi bi-speedometer2"></i> Key Performance Indicators</h5>
+      </div>
+     <div class="card-body">
+  <div class="row text-center">
+         <div class="col-md-3">
+       <div class="p-3">
+        <i class="bi bi-clock-history text-primary" style="font-size: 3rem;"></i>
+<h4 class="mt-2">@Model.AverageResolutionDays.ToString("F1") days</h4>
+          <p class="text-muted mb-0">Average Resolution Time</p>
+        </div>
+     </div>
+           <div class="col-md-3">
+    <div class="p-3">
+    <i class="bi bi-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
+    <h4 class="mt-2">@Model.AllRequests.Count(r => r.Priority == MunicipalServicesApp.Models.RequestPriority.Critical || r.Priority == MunicipalServicesApp.Models.RequestPriority.High)</h4>
+<p class="text-muted mb-0">High/Critical Priority</p>
+    </div>
+   </div>
+   <div class="col-md-3">
+   <div class="p-3">
+      <i class="bi bi-lightning text-warning" style="font-size: 3rem;"></i>
+       <h4 class="mt-2">@Model.AllRequests.Count(r => r.DaysOpen > 14 && r.Status != MunicipalServicesApp.Models.RequestStatus.Resolved)</h4>
+<p class="text-muted mb-0">Overdue (>14 days)</p>
+      </div>
+  </div>
+        <div class="col-md-3">
+   <div class="p-3">
+        <i class="bi bi-check-circle text-success" style="font-size: 3rem;"></i>
+   <h4 class="mt-2">@((Model.ResolvedRequests * 100.0 / Model.TotalRequests).ToString("F1"))%</h4>
+    <p class="text-muted mb-0">Resolution Rate</p>
+   </div>
+        </div>
+ </div>
+   </div>
+     </div>
+      </div>
+    </div>
+
+    <!-- Data Structures Explanation -->
+    <div class="row">
+        <div class="col-12">
+   <div class="card shadow-sm border-primary">
+     <div class="card-header bg-primary text-white">
+     <h5 class="mb-0"><i class="bi bi-diagram-3"></i> Data Structures & Algorithms Used</h5>
+     </div>
+        <div class="card-body">
+      <div class="row">
+      <div class="col-md-6">
+      <h6 class="text-primary"><i class="bi bi-tree"></i> Tree Structures</h6>
+   <ul>
+     <li><strong>Binary Search Tree:</strong> Efficient searching and sorting by ID (O(log n) average)</li>
+   <li><strong>AVL Tree:</strong> Self-balancing tree for priority-based operations</li>
+<li><strong>Red-Black Tree:</strong> Alternative balanced tree for consistent performance</li>
+   </ul>
+         </div>
+      <div class="col-md-6">
+       <h6 class="text-success"><i class="bi bi-stack"></i> Heap Structures</h6>
+  <ul>
+     <li><strong>Max Heap:</strong> Quick access to highest priority requests (O(1) peek)</li>
+ <li><strong>Min Heap:</strong> Efficient tracking of oldest requests</li>
+  <li><strong>Priority Queue:</strong> Manages work queue by urgency</li>
+    </ul>
+  </div>
+        </div>
+    <div class="row mt-3">
+        <div class="col-md-6">
+     <h6 class="text-info"><i class="bi bi-diagram-3"></i> Graph Algorithms</h6>
+ <ul>
+       <li><strong>Adjacency List:</strong> Stores relationships between requests</li>
+        <li><strong>BFS/DFS Traversal:</strong> Finds connected requests and patterns</li>
+   <li><strong>Clustering:</strong> Groups requests by location and category</li>
+     <li><strong>MST (Prim's):</strong> Identifies core issues affecting multiple requests</li>
+  </ul>
+     </div>
+    <div class="col-md-6">
+     <h6 class="text-warning"><i class="bi bi-bar-chart"></i> Analytics Features</h6>
+ <ul>
+     <li><strong>Real-time Statistics:</strong> Live calculation of KPIs</li>
+<li><strong>Pattern Detection:</strong> Identifies location-based trends</li>
+      <li><strong>Relationship Mapping:</strong> Links related service requests</li>
+      <li><strong>Performance Tracking:</strong> Monitors resolution times</li>
+   </ul>
+   </div>
+   </div>
+             </div>
+        </div>
+        </div>
+ </div>
+
+    <div class="row mt-4">
+        <div class="col-12 text-center">
+   <a asp-action="Index" class="btn btn-primary btn-lg">
+         <i class="bi bi-arrow-left"></i> Back to Request Status
+    </a>
+ </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script>
+   // Status Distribution Chart
+     var statusCtx = document.getElementById('statusChart').getContext('2d');
+   var statusChart = new Chart(statusCtx, {
+     type: 'doughnut',
+     data: {
+      labels: [@Html.Raw(string.Join(",", Model.StatusDistribution.Keys.Select(k => $"'{k}'")))],
+      datasets: [{
+          data: [@string.Join(",", Model.StatusDistribution.Values)],
+ backgroundColor: [
+          '#0dcaf0', // info - Submitted
+        '#ffc107', // warning - Under Review
+         '#0d6efd', // primary - Assigned
+    '#0d6efd', // primary - In Progress
+       '#198754', // success - Resolved
+       '#6c757d', // secondary - Closed
+        '#dc3545'  // danger - Rejected
+      ],
+          borderWidth: 2,
+  borderColor: '#fff'
+     }]
+ },
+            options: {
+  responsive: true,
+     maintainAspectRatio: false,
+  plugins: {
+      legend: {
+   position: 'bottom'
+  },
+   title: {
+         display: false
+            }
+    }
+            }
+   });
+
+     // Priority Distribution Chart
+var priorityCtx = document.getElementById('priorityChart').getContext('2d');
+        var priorityChart = new Chart(priorityCtx, {
+  type: 'bar',
+    data: {
+ labels: [@Html.Raw(string.Join(",", Model.PriorityDistribution.Keys.Select(k => $"'{k}'")))],
+ datasets: [{
+      label: 'Number of Requests',
+         data: [@string.Join(",", Model.PriorityDistribution.Values)],
+     backgroundColor: [
+        '#6c757d', // Low
+    '#0dcaf0', // Medium
+     '#ffc107', // High
+       '#dc3545'  // Critical
+    ],
+          borderColor: [
+     '#6c757d',
+        '#0dcaf0',
+  '#ffc107',
+        '#dc3545'
+        ],
+  borderWidth: 2
+   }]
+  },
+            options: {
+    responsive: true,
+        maintainAspectRatio: false,
+ scales: {
+     y: {
+       beginAtZero: true,
+           ticks: {
+       stepSize: 1
+       }
+     }
+   },
+         plugins: {
+         legend: {
+    display: false
+     }
+   }
+   }
+        });
+    </script>
+}

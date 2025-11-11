@@ -22,6 +22,7 @@ namespace MunicipalServicesApp
             builder.Services.AddScoped<MunicipalServicesApp.Services.IEventService, MunicipalServicesApp.Services.EventService>();
             builder.Services.AddScoped<MunicipalServicesApp.Services.IAdminAuthService, MunicipalServicesApp.Services.AdminAuthService>();
             builder.Services.AddScoped<MunicipalServicesApp.Services.IEventRsvpService, MunicipalServicesApp.Services.EventRsvpService>();
+            builder.Services.AddScoped<MunicipalServicesApp.Services.IServiceRequestStatusService, MunicipalServicesApp.Services.ServiceRequestStatusService>();
 
             // Session support for admin authentication
             builder.Services.AddSession(options =>
@@ -39,6 +40,10 @@ namespace MunicipalServicesApp
                 var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 context.Database.EnsureCreated();
                 DbInitializer.SeedData(context);
+                
+                // Initialize data structures for service request status
+                var requestService = scope.ServiceProvider.GetRequiredService<MunicipalServicesApp.Services.IServiceRequestStatusService>();
+                requestService.RebuildDataStructuresAsync().Wait();
             }
 
             if (!app.Environment.IsDevelopment())

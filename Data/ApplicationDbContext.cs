@@ -14,6 +14,7 @@ namespace MunicipalServicesApp.Data
         public DbSet<LocalEvent> Events { get; set; }
         public DbSet<ReportIssue> ReportIssues { get; set; }
         public DbSet<EventRsvp> EventRsvps { get; set; }
+        public DbSet<ServiceRequest> ServiceRequests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -59,6 +60,23 @@ namespace MunicipalServicesApp.Data
 
                 // Creates  index for faster searches for events and for user cell phone numbers
                 entity.HasIndex(e => new { e.EventId, e.CellPhoneNumber });
+            });
+
+            // Configure ServiceRequest table
+            modelBuilder.Entity<ServiceRequest>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.RequestNumber).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.Title).IsRequired().HasMaxLength(200);
+                entity.Property(e => e.Description).IsRequired().HasMaxLength(2000);
+                entity.Property(e => e.Category).IsRequired();
+                entity.Property(e => e.Location).IsRequired().HasMaxLength(200);
+                entity.Property(e => e.Department).IsRequired().HasMaxLength(100);
+                
+                // Create index for faster searches by request number
+                entity.HasIndex(e => e.RequestNumber).IsUnique();
+                entity.HasIndex(e => e.Status);
+                entity.HasIndex(e => e.Priority);
             });
         }
     }
