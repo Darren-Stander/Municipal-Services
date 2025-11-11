@@ -1,0 +1,74 @@
+@model MunicipalServicesApp.Models.LocalEvent
+
+@{
+    ViewData["Title"] = Model.Title;
+    var rsvpCount = ViewBag.RsvpCount ?? 0;
+}
+
+<div class="container">
+    <h2>@Model.Title</h2>
+    <hr>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card mb-3">
+                <div class="card-header">
+                    Event Information
+                </div>
+                <div class="card-body">
+                    <p class="mb-3">
+                        <span class="badge bg-info">@Model.Category</span>
+                        @if (Model.Priority <= 2)
+                        {
+                            <span class="badge bg-danger">High Priority</span>
+                        }
+                    </p>
+
+                    <h5>Description</h5>
+                    <p>@Model.Description</p>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <strong>Date:</strong><br>
+                            @Model.EventDate.ToString("MMMM dd, yyyy")
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong>Time:</strong><br>
+                            @Model.EventDate.ToString("hh:mm tt")
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong>Location:</strong><br>
+                            @Model.Location
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong>RSVPs:</strong><br>
+                            @rsvpCount people attending
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    Attend This Event
+                </div>
+                <div class="card-body text-center">
+                    <i class="bi bi-people text-success" style="font-size: 48px;"></i>
+                    <p class="mt-2"><strong>@rsvpCount</strong> people have RSVP'd</p>
+                    <a asp-action="Rsvp" asp-route-eventId="@Model.Id" class="btn btn-success w-100 mb-2">
+                        RSVP Now
+                    </a>
+                    <p class="text-muted small mb-0">Reserve your spot today</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a asp-action="Index" class="btn btn-secondary">Back to Events</a>
+    </div>
+</div>

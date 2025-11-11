@@ -1,0 +1,144 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="container">
+    <div class="card border-primary mb-4">
+        <div class="card-body text-center py-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); color: white;">
+            <h1 class="display-5 mb-2">
+                <i class="bi bi-building"></i> Welcome to Municipal Services
+            </h1>
+            <p class="lead mb-0">Your one-stop portal for community engagement</p>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <p class="text-center text-muted">
+                Report issues, attend community events, and stay connected with local services
+            </p>
+        </div>
+    </div>
+
+
+    <div class="row mt-4">
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-header bg-warning">
+                    <h5 class="mb-0"><i class="bi bi-exclamation-triangle me-2"></i>Report Issue</h5>
+                </div>
+                <div class="card-body">
+                    <p>Report potholes, broken streetlights, water leaks, and other municipal issues.</p>
+                    <ul class="small">
+                        <li>Upload photos</li>
+                        <li>Track progress</li>
+                        <li>Get updates</li>
+                    </ul>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a asp-controller="ReportIssue" asp-action="Index" class="btn btn-warning w-100">
+                        <i class="bi bi-file-earmark-text"></i> Report Now
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-header bg-success">
+                    <h5 class="mb-0"><i class="bi bi-calendar-event me-2"></i>Events</h5>
+                </div>
+                <div class="card-body">
+                    <p>View upcoming community events, meetings, and announcements in your area.</p>
+                    <ul class="small">
+                        <li>Browse events</li>
+                        <li>RSVP online</li>
+                        <li>Get reminders</li>
+                    </ul>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a asp-controller="Event" asp-action="Index" class="btn btn-success w-100">
+                        <i class="bi bi-calendar-check"></i> View Events
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-header bg-info">
+                    <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Track Status</h5>
+                </div>
+                <div class="card-body">
+                    <p>Check the status of your service requests and view progress updates.</p>
+                    <ul class="small">
+                        <li>Real-time tracking</li>
+                        <li>Status updates</li>
+                        <li>Resolution timeline</li>
+                    </ul>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <button class="btn btn-secondary w-100" disabled>
+                        <i class="bi bi-hourglass-split"></i> Coming Soon
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="alert alert-primary border-primary">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-shield-lock-fill me-3" style="font-size: 2rem;"></i>
+                    <div>
+                        <strong>Staff Login:</strong> 
+                        Municipal employees can 
+                        <a asp-controller="Admin" asp-action="Login" class="alert-link">login here</a> 
+                        to access the admin dashboard.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row mt-4">
+        <div class="col-md-6 mb-3">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-info-circle me-2"></i>How It Works
+                </div>
+                <div class="card-body">
+                    <ol class="mb-0">
+                        <li><strong>Report:</strong> Submit issues with details and photos</li>
+                        <li><strong>Track:</strong> Monitor your report status</li>
+                        <li><strong>Engage:</strong> Attend community events</li>
+                        <li><strong>Connect:</strong> Stay informed about local news</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-question-circle me-2"></i>Quick Stats
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-6 mb-3">
+                            <h3 class="text-primary">10+</h3>
+                            <small class="text-muted">Active Events</small>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <h3 class="text-success">100%</h3>
+                            <small class="text-muted">Free Service</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

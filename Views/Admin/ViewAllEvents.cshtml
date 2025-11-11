@@ -1,0 +1,91 @@
+@model List<MunicipalServicesApp.Models.LocalEvent>
+
+@{
+    ViewData["Title"] = "All Events - Admin View";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-list-ul me-2"></i>All Events</h2>
+        <a asp-action="Dashboard" class="btn btn-secondary">
+            <i class="bi bi-arrow-left me-1"></i>Back to Dashboard
+        </a>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0">Complete Event List</h5>
+        </div>
+        <div class="card-body">
+            @if (Model.Any())
+            {
+                <div class="row g-4">
+                    @foreach (var evt in Model)
+                    {
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                    <h6 class="text-white mb-0">@evt.Title</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-2">
+                                        <span class="badge bg-info">@evt.Category</span>
+                                        @if (evt.Priority == 1)
+                                        {
+                                            <span class="badge bg-danger">High Priority</span>
+                                        }
+                                        else if (evt.Priority == 2)
+                                        {
+                                            <span class="badge bg-warning text-dark">Medium</span>
+                                        }
+                                    </div>
+                                    <p class="card-text small">@evt.Description</p>
+                                    <hr />
+                                    <div class="small">
+                                        <p class="mb-1">
+                                            <i class="bi bi-calendar3 text-primary me-2"></i>
+                                            <strong>@evt.EventDate.ToString("MMMM dd, yyyy")</strong>
+                                        </p>
+                                        <p class="mb-1">
+                                            <i class="bi bi-clock text-success me-2"></i>
+                                            @evt.EventDate.ToString("hh:mm tt")
+                                        </p>
+                                        <p class="mb-1">
+                                            <i class="bi bi-geo-alt text-danger me-2"></i>
+                                            @evt.Location
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-light">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <small class="text-muted">
+                                            ID: @evt.Id | Created: @evt.CreatedDate.ToString("MMM dd, yyyy")
+                                        </small>
+                                        <a asp-action="ViewEventRsvps" asp-route-eventId="@evt.Id" class="btn btn-sm btn-primary">
+                                            <i class="bi bi-people"></i> RSVPs
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="alert alert-success mt-4">
+                    <i class="bi bi-check-circle me-2"></i>
+                    Total Events: <strong>@Model.Count</strong>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning" role="alert">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    No events have been created yet.
+                </div>
+                <a asp-action="CreateEvent" class="btn btn-success">
+                    <i class="bi bi-plus-lg me-1"></i>Create First Event
+                </a>
+            }
+        </div>
+    </div>
+</div>

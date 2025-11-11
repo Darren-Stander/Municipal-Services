@@ -1,0 +1,122 @@
+@model MunicipalServicesApp.Models.ViewModels.EventSearchViewModel
+
+@{
+    ViewData["Title"] = "Local Events";
+}
+
+<div class="container">
+    <h2>Local Events and Announcements</h2>
+    <hr>
+    <div class="card mb-4">
+        <div class="card-header">
+            Search Events
+        </div>
+        <div class="card-body">
+            <form asp-action="Search" method="post">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Category</label>
+                        <select name="category" class="form-select">
+                            <option value="">All Categories</option>
+                            @foreach (var category in Model.Categories.OrderBy(c => c))
+                            {
+                                <option value="@category" selected="@(category == Model.SearchCategory)">@category</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Date</label>
+                        <input type="date" name="date" class="form-control" value="@Model.SearchDate?.ToString("yyyy-MM-dd")" />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Search</label>
+                        <input type="text" name="keyword" class="form-control" placeholder="Search..." value="@Model.SearchKeyword" />
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Search</button>
+                <a asp-action="Index" class="btn btn-secondary">Clear</a>
+            </form>
+        </div>
+    </div>
+    <h4>
+        @if (!string.IsNullOrEmpty(Model.SearchCategory) || Model.SearchDate.HasValue || !string.IsNullOrEmpty(Model.SearchKeyword))
+        {
+            <text>Search Results</text>
+        }
+        else
+        {
+            <text>Upcoming Events</text>
+        }
+        <span class="badge bg-secondary">@Model.Events.Count</span>
+    </h4>
+
+    @if (Model.Events.Any())
+    {
+        <div class="row">
+            @foreach (var evt in Model.Events)
+            {
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@evt.Title</h5>
+                            <p class="mb-2">
+                                <span class="badge bg-info">@evt.Category</span>
+                                @if (evt.Priority <= 2)
+                                {
+                                    <span class="badge bg-danger">High Priority</span>
+                                }
+                            </p>
+                            <p class="card-text">@evt.Description</p>
+                            <p class="mb-1"><strong>Date:</strong> @evt.EventDate.ToString("MMMM dd, yyyy")</p>
+                            <p class="mb-1"><strong>Time:</strong> @evt.EventDate.ToString("hh:mm tt")</p>
+                            <p class="mb-3"><strong>Location:</strong> @evt.Location</p>
+                            <a asp-action="Details" asp-route-id="@evt.Id" class="btn btn-sm btn-primary">Details</a>
+                            <a asp-action="Rsvp" asp-route-eventId="@evt.Id" class="btn btn-sm btn-success">RSVP</a>
+                        </div>
+                        <div class="card-footer text-muted">
+                            <small>Posted: @evt.CreatedDate.ToString("MMM dd, yyyy")</small>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning">
+            No events found. Try adjusting your search criteria.
+        </div>
+    }
+
+    @if (Model.RecommendedEvents.Any())
+    {
+        <hr class="my-4">
+        <h4>Recommended Events</h4>
+        <p class="text-muted">Based on popular searches</p>
+        
+        <div class="row">
+            @foreach (var evt in Model.RecommendedEvents.Take(6))
+            {
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">@evt.Title</h6>
+                            <p class="mb-2"><span class="badge bg-info">@evt.Category</span></p>
+                            <p class="card-text small">
+                                @(evt.Description.Length > 80 ? evt.Description.Substring(0, 80) + "..." : evt.Description)
+                            </p>
+                            <p class="mb-0 text-muted small">
+                                <i class="bi bi-calendar"></i> @evt.EventDate.ToString("MMM dd") |
+                                <i class="bi bi-geo-alt"></i> @(evt.Location.Length > 20 ? evt.Location.Substring(0, 20) + "..." : evt.Location)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <div class="mt-4">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Back to Home</a>
+    </div>
+</div>

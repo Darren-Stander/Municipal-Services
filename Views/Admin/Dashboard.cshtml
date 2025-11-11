@@ -1,0 +1,55 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container">
+    <h2>Admin Dashboard</h2>
+    <hr>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="bi bi-plus-circle text-success" style="font-size: 48px;"></i>
+                    <h5 class="mt-3">Create Event</h5>
+                    <p>Add a new community event or announcement</p>
+                    <a asp-action="CreateEvent" class="btn btn-success w-100">Create New Event</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="bi bi-list-ul text-primary" style="font-size: 48px;"></i>
+                    <h5 class="mt-3">Manage Events</h5>
+                    <p>View and sort all events with filtering options</p>
+                    <a asp-action="ManageEvents" class="btn btn-primary w-100">Manage Events</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="bi bi-calendar-check text-info" style="font-size: 48px;"></i>
+                    <h5 class="mt-3">View All Events</h5>
+                    <p>Browse all events and view RSVPs</p>
+                    <a asp-action="ViewAllEvents" class="btn btn-info w-100">View All Events</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    Quick Actions
+                </div>
+                <div class="card-body">
+                    <p><strong>Welcome, Administrator</strong></p>
+                    <p>Use the dashboard to manage community events and view attendance.</p>
+                    <a asp-action="Logout" class="btn btn-danger">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

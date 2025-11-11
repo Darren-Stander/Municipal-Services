@@ -1,0 +1,137 @@
+@model MunicipalServicesApp.Models.EventRsvp
+
+@{
+    ViewData["Title"] = "RSVP Confirmed";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-success text-white text-center py-4">
+                    <i class="bi bi-check-circle" style="font-size: 4rem;"></i>
+                    <h2 class="mt-3 mb-0">RSVP Confirmed!</h2>
+                </div>
+                <div class="card-body p-5">
+                    <div class="alert alert-success text-center">
+                        <h4 class="alert-heading">Thank you for your RSVP!</h4>
+                        <p class="mb-0">We're excited to have you join us at this event.</p>
+                    </div>
+
+                    @if (Model.Event != null)
+                    {
+                        <div class="card border-primary mb-4">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0"><i class="bi bi-calendar-event me-2"></i>Event Details</h5>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">@Model.Event.Title</h5>
+                                <p class="card-text">@Model.Event.Description</p>
+                                <hr>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <p class="mb-2">
+                                            <i class="bi bi-calendar3 text-primary me-2"></i>
+                                            <strong>Date:</strong> @Model.Event.EventDate.ToString("MMMM dd, yyyy")
+                                        </p>
+                                        <p class="mb-2">
+                                            <i class="bi bi-clock text-success me-2"></i>
+                                            <strong>Time:</strong> @Model.Event.EventDate.ToString("hh:mm tt")
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="mb-2">
+                                            <i class="bi bi-geo-alt text-danger me-2"></i>
+                                            <strong>Location:</strong> @Model.Event.Location
+                                        </p>
+                                        <p class="mb-2">
+                                            <i class="bi bi-tag text-info me-2"></i>
+                                            <strong>Category:</strong> @Model.Event.Category
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="card border-info mb-4">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0"><i class="bi bi-person-check me-2"></i>Your RSVP Information</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="mb-2">
+                                        <strong>Name:</strong> @Model.FirstName @Model.LastName
+                                    </p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="mb-2">
+                                        <strong>Phone:</strong> @Model.CellPhoneNumber
+                                    </p>
+                                </div>
+                                @if (!string.IsNullOrEmpty(Model.Email))
+                                {
+                                    <div class="col-md-6">
+                                        <p class="mb-2">
+                                            <strong>Email:</strong> @Model.Email
+                                        </p>
+                                    </div>
+                                }
+                                <div class="col-md-6">
+                                    <p class="mb-2">
+                                        <strong>RSVP Date:</strong> @Model.RsvpDate.ToString("MMM dd, yyyy 'at' hh:mm tt")
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <h6 class="alert-heading"><i class="bi bi-info-circle me-2"></i>What's Next?</h6>
+                        <ul class="mb-0">
+                            <li>Save this confirmation for your records</li>
+                            @if (!string.IsNullOrEmpty(Model.Email))
+                            {
+                                <li>Check your email for a confirmation message</li>
+                            }
+                            <li>We'll send you a reminder closer to the event date</li>
+                            <li>Arrive at the venue on time on @Model.Event?.EventDate.ToString("MMMM dd, yyyy")</li>
+                        </ul>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <a asp-action="Index" class="btn btn-primary btn-lg">
+                            <i class="bi bi-calendar-event me-2"></i>View More Events
+                        </a>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-house-fill me-2"></i>Back to Home
+                        </a>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <p class="text-muted">
+                            <i class="bi bi-envelope me-1"></i>
+                            For questions, please contact the event organizers.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bi-check-circle {
+        animation: scaleIn 0.5s ease-in-out;
+    }
+
+    @@keyframes scaleIn {
+        from {
+            transform: scale(0);
+        }
+        to {
+            transform: scale(1);
+        }
+    }
+</style>

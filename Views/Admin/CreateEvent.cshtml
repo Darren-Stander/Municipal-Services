@@ -1,0 +1,119 @@
+@model MunicipalServicesApp.Models.LocalEvent
+
+@{
+    ViewData["Title"] = "Create Event";
+}
+
+<div class="container mt-4 mb-5 pb-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h2 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Create New Event</h2>
+                </div>
+                <div class="card-body">
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="bi bi-check-circle me-2"></i>@TempData["SuccessMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    <form asp-action="CreateEvent" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label fw-bold">
+                                <i class="bi bi-card-heading me-1"></i>Event Title
+                            </label>
+                            <input asp-for="Title" class="form-control" placeholder="Enter event title" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label fw-bold">
+                                <i class="bi bi-card-text me-1"></i>Description
+                            </label>
+                            <textarea asp-for="Description" class="form-control" rows="4" 
+                                      placeholder="Enter event description..."></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="EventDate" class="form-label fw-bold">
+                                    <i class="bi bi-calendar3 me-1"></i>Event Date & Time
+                                </label>
+                                <input asp-for="EventDate" type="datetime-local" class="form-control" />
+                                <span asp-validation-for="EventDate" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Category" class="form-label fw-bold">
+                                    <i class="bi bi-tag me-1"></i>Category
+                                </label>
+                                <select asp-for="Category" class="form-select">
+                                    <option value="">-- Select Category --</option>
+                                    <option value="Community">Community</option>
+                                    <option value="Government">Government</option>
+                                    <option value="Environment">Environment</option>
+                                    <option value="Health">Health</option>
+                                    <option value="Infrastructure">Infrastructure</option>
+                                    <option value="Sports">Sports</option>
+                                    <option value="Education">Education</option>
+                                    <option value="Culture">Culture</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <span asp-validation-for="Category" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8 mb-3">
+                                <label asp-for="Location" class="form-label fw-bold">
+                                    <i class="bi bi-geo-alt me-1"></i>Location
+                                </label>
+                                <input asp-for="Location" class="form-control" placeholder="Event location" />
+                                <span asp-validation-for="Location" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="Priority" class="form-label fw-bold">
+                                    <i class="bi bi-flag me-1"></i>Priority
+                                </label>
+                                <select asp-for="Priority" class="form-select">
+                                    <option value="1">High (1)</option>
+                                    <option value="2">Medium (2)</option>
+                                    <option value="3">Low (3)</option>
+                                </select>
+                                <span asp-validation-for="Priority" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ImageUrl" class="form-label fw-bold">
+                                <i class="bi bi-image me-1"></i>Image URL (Optional)
+                            </label>
+                            <input asp-for="ImageUrl" class="form-control" placeholder="" />
+                            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a asp-action="Dashboard" class="btn btn-secondary">
+                                <i class="bi bi-x-circle me-1"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-save me-1"></i>Create Event
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,109 @@
+@model MunicipalServicesApp.Models.ViewModels.ReportIssueViewModel
+
+@{
+    ViewData["Title"] = "Report an Issue";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card border-warning">
+                <div class="card-header bg-warning">
+                    <h3 class="mb-0"><i class="bi bi-exclamation-triangle me-2"></i>Report a Municipal Issue</h3>
+                </div>
+                <div class="card-body">
+                    <p>Help us keep our community safe and well-maintained by reporting issues.</p>
+
+                    <form asp-action="Index" method="post" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Issue.Location" class="form-label">
+                                <strong>Location</strong>
+                            </label>
+                            <input asp-for="Issue.Location" class="form-control" placeholder="Enter location (e.g., 123 Main Street)" />
+                            <span asp-validation-for="Issue.Location" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Issue.Category" class="form-label">
+                                <strong>Issue Category</strong>
+                            </label>
+                            <select asp-for="Issue.Category" class="form-select">
+                                <option value="">-- Select a Category --</option>
+                                @if (Model.Categories != null && Model.Categories.Any())
+                                {
+                                    @foreach (var category in Model.Categories)
+                                    {
+                                        <option value="@category">@category</option>
+                                    }
+                                }
+                            </select>
+                            <span asp-validation-for="Issue.Category" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Issue.Description" class="form-label">
+                                <strong>Description</strong>
+                            </label>
+                            <textarea asp-for="Issue.Description" class="form-control" rows="4" 
+                                      placeholder="Describe the issue in detail..."></textarea>
+                            <span asp-validation-for="Issue.Description" class="text-danger"></span>
+                            <small class="text-muted">Maximum 1000 characters</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <strong>Attachments (Optional)</strong>
+                            </label>
+                            <input type="file" name="Attachments" class="form-control" multiple accept="image/*,.pdf" id="fileInput" />
+                            <small class="text-muted">Upload photos or documents</small>
+                            <div id="filePreview" class="mt-2"></div>
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-warning">
+                                <i class="bi bi-send me-1"></i>Submit Report
+                            </button>
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-secondary ms-2">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="alert alert-info mt-3">
+                <h6><strong>Reporting Tips:</strong></h6>
+                <ul class="mb-0">
+                    <li>Be specific about the location</li>
+                    <li>Select the correct category</li>
+                    <li>Include photos if possible</li>
+                    <li>Provide detailed description</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            var preview = document.getElementById('filePreview');
+            preview.innerHTML = '';
+            
+            var files = e.target.files;
+            if (files.length > 0) {
+                var list = '<div class="alert alert-secondary"><strong>Files:</strong><ul class="mb-0">';
+                
+                for (var i = 0; i < files.length; i++) {
+                    var size = (files[i].size / 1024).toFixed(1);
+                    list += '<li>' + files[i].name + ' (' + size + ' KB)</li>';
+                }
+                
+                list += '</ul></div>';
+                preview.innerHTML = list;
+            }
+        });
+    </script>
+}
