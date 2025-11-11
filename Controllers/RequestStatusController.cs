@@ -12,11 +12,11 @@ namespace MunicipalServicesApp.Controllers
 
         public RequestStatusController(
             IServiceRequestStatusService statusService,
-            ILogger<RequestStatusController> logger)
+          ILogger<RequestStatusController> logger)
         {
-            _statusService = statusService;
+     _statusService = statusService;
             _logger = logger;
-        }
+}
 
         /// <summary>
         /// Main index page showing all service requests with filtering and advanced data structure features
@@ -223,70 +223,7 @@ namespace MunicipalServicesApp.Controllers
         /// </summary>
         private List<RequestTimelineEvent> BuildTimeline(ServiceRequest request)
         {
-            var timeline = new List<RequestTimelineEvent>();
-
-            // Submitted
-            timeline.Add(new RequestTimelineEvent
-            {
-                Status = "Submitted",
-                Date = request.SubmittedDate,
-                Icon = "bi-file-earmark-plus",
-                Color = "info",
-                Description = $"Request submitted by {request.SubmittedBy}"
-            });
-
-            // Under Review / Assigned
-            if (request.AssignedDate.HasValue)
-            {
-                timeline.Add(new RequestTimelineEvent
-                {
-                    Status = "Assigned",
-                    Date = request.AssignedDate.Value,
-                    Icon = "bi-person-check",
-                    Color = "primary",
-                    Description = $"Assigned to {request.AssignedTo ?? "Team"}"
-                });
-            }
-
-            // In Progress
-            if (request.InProgressDate.HasValue)
-            {
-                timeline.Add(new RequestTimelineEvent
-                {
-                    Status = "In Progress",
-                    Date = request.InProgressDate.Value,
-                    Icon = "bi-tools",
-                    Color = "warning",
-                    Description = "Work in progress"
-                });
-            }
-
-            // Completed
-            if (request.CompletedDate.HasValue)
-            {
-                timeline.Add(new RequestTimelineEvent
-                {
-                    Status = request.Status == RequestStatus.Resolved ? "Resolved" : "Closed",
-                    Date = request.CompletedDate.Value,
-                    Icon = "bi-check-circle",
-                    Color = "success",
-                    Description = request.Notes ?? "Request completed"
-                });
-            }
-            // Estimated completion (if not yet completed)
-            else if (request.EstimatedCompletionDate.HasValue)
-            {
-                timeline.Add(new RequestTimelineEvent
-                {
-                    Status = "Estimated Completion",
-                    Date = request.EstimatedCompletionDate.Value,
-                    Icon = "bi-calendar-check",
-                    Color = "secondary",
-                    Description = "Expected completion date"
-                });
-            }
-
-            return timeline.OrderBy(t => t.Date).ToList();
+   // ...existing code...
         }
     }
 }
