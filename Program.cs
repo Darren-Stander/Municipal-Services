@@ -1,12 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using MunicipalServicesApp.Data;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace MunicipalServicesApp
 {
     public class Program
     {
-        public static void Main(string[] args)
-        {
+      public static void Main(string[] args)
+   {
             var builder = WebApplication.CreateBuilder(args);
 
 
@@ -65,7 +67,38 @@ namespace MunicipalServicesApp
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            app.Run();
+            // Launch browser automatically
+            var urls = app.Urls;
+        app.Lifetime.ApplicationStarted.Register(() =>
+ {
+                var url = app.Urls.FirstOrDefault() ?? "http://localhost:5000";
+           OpenBrowser(url);
+ });
+
+   app.Run();
+   }
+
+ private static void OpenBrowser(string url)
+    {
+ try
+ {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+      Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+      }
+         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+     Process.Start("xdg-open", url);
+   }
+    else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+              {
+         Process.Start("open", url);
+       }
+     }
+catch (Exception ex)
+   {
+      Console.WriteLine($"Unable to launch browser: {ex.Message}");
+}
         }
     }
 }
