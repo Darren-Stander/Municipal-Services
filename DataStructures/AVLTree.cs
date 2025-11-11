@@ -2,21 +2,21 @@ using MunicipalServicesApp.Models;
 
 namespace MunicipalServicesApp.DataStructures
 {
-    /// <summary>
+  /// <summary>
     /// AVL Tree node with height tracking
     /// </summary>
     public class AVLNode
     {
-        public ServiceRequest Data { get; set; }
-        public AVLNode? Left { get; set; }
+   public ServiceRequest Data { get; set; }
+  public AVLNode? Left { get; set; }
         public AVLNode? Right { get; set; }
         public int Height { get; set; }
 
         public AVLNode(ServiceRequest data)
         {
-            Data = data;
-   Height = 1;
-     }
+      Data = data;
+       Height = 1;
+        }
     }
 
     /// <summary>
